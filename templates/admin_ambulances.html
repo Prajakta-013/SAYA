@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Ambulances — SAYA{% endblock %}
+
+{% block nav %}
+{% include "_admin_nav.html" %}
+{% endblock %}
+
+{% block content %}
+<header class="page-head">
+  <p class="eyebrow">SAYA Emergency Response Control Center</p>
+  <h1>Ambulances</h1>
+  <p>Which SAYA ambulances are available?</p>
+</header>
+
+<section class="split">
+  <div>
+    <h2>Fleet</h2>
+    {% for ambulance in ambulances %}
+      <div class="resource-row">
+        <div>
+          <strong>{{ ambulance.ambulance_number }}</strong>
+          <p>
+            {{ ambulance.ambulance_type }}
+            {% if ambulance.location %} · {{ ambulance.location }}{% endif %}
+          </p>
+          <p>
+            {% if ambulance.current_incident_id %}Responding to incident #{{ ambulance.current_incident_id }}{% else %}Not assigned{% endif %}
+          </p>
+        </div>
+        <span class="badge {% if ambulance.status == 'Available' %}available{% else %}busy{% endif %}">
+          {{ ambulance.status }}
+        </span>
+      </div>
+    {% else %}
+      <p class="empty">No ambulances in the fleet.</p>
+    {% endfor %}
+  </div>
+
+  <form class="stack-form inset" action="{{ url_for('admin_add_ambulance') }}" method="post">
+    <h2>Add a SAYA ambulance</h2>
+    <label>Ambulance number
+      <input name="ambulance_number" required>
+    </label>
+    <label>Type
+      <select name="ambulance_type" required>
+        <option value="Basic Life Support">Basic Life Support</option>
+        <option value="Advanced Life Support">Advanced Life Support</option>
+      </select>
+    </label>
+    <label>Initial location
+      <input name="location" autocomplete="street-address" required>
+    </label>
+    <label>Status
+      <select name="status" required>
+        <option value="Available">Available</option>
+        <option value="Assigned">Assigned</option>
+        <option value="Busy">Busy</option>
+      </select>
+    </label>
+    <button type="submit" class="btn-primary">Add ambulance</button>
+    <p class="quiet">SAYA finds coordinates from the address and selects available units automatically.</p>
+  </form>
+</section>
+{% endblock %}

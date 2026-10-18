@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}SAYA Phone Monitor — AI-Assisted Demo{% endblock %}
+{% block body_class %}phone-body{% endblock %}
+{% block nav %}
+<nav class="nav">
+  <a href="{{ url_for('home') }}">Home</a>
+</nav>
+{% endblock %}
+
+{% block content %}
+<section class="phone-monitor page">
+  <header class="page-head">
+    <p class="eyebrow">Victim smartphone · prototype</p>
+    <h1>Phone Crash Monitor</h1>
+    <p class="quiet">AI-assisted demo crash detection using this device's motion and orientation sensors. This is a prototype, not production-certified emergency detection.</p>
+  </header>
+
+  <section class="phone-status-card" aria-live="polite">
+    <div class="phone-monitor-state">
+      <span class="phone-status-dot" id="monitor-dot"></span>
+      <strong id="monitor-state">Monitoring not started</strong>
+    </div>
+    <p id="monitor-message">Start monitoring on this phone and allow motion and location access when prompted.</p>
+    <div class="sensor-grid" aria-label="Live phone sensor readings">
+      <div class="sensor-reading"><span>Acceleration</span><strong id="accel-value">— m/s²</strong></div>
+      <div class="sensor-reading"><span>Rotation rate</span><strong id="rotation-value">— °/s</strong></div>
+      <div class="sensor-reading"><span>Orientation change</span><strong id="orientation-value">— °</strong></div>
+      <div class="sensor-reading"><span>GPS</span><strong id="gps-value">Waiting</strong></div>
+    </div>
+    <div class="phone-countdown" id="countdown" hidden>
+      <h2>Possible Accident Detected</h2>
+      <p>Emergency response will start unless you cancel.</p>
+      <strong id="countdown-value">10</strong>
+    </div>
+    <div class="phone-actions">
+      <button class="btn-primary" id="start-monitoring" type="button">Start Phone Monitoring</button>
+      <button class="btn-secondary" id="cancel-alert" type="button" hidden>I'm OK — Cancel Alert</button>
+      <button class="btn-secondary" id="resume-monitoring" type="button" hidden>Return to Monitoring</button>
+      <button class="btn-secondary" id="retry-alert" type="button" hidden>Retry Sending This Alert</button>
+    </div>
+  </section>
+  <p class="phone-demo-note">Keep this page open and the phone nearby. Strong movement/rotation is a demonstration trigger and may not identify real accidents reliably. An alert is sent only after the countdown and only when a real GPS fix is available.</p>
+</section>
+<script src="{{ url_for('static', filename='phone-monitor.js') }}" defer></script>
+{% endblock %}

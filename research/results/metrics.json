@@ -1,0 +1,417 @@
+{
+  "experiment": "UCI HAR smartphone activity classification",
+  "task_scope": "Six daily activities only. The labels do not include crashes or accidents; these scores are not crash-detection performance.",
+  "source_url": "https://archive.ics.uci.edu/static/public/240/human+activity+recognition+using+smartphones.zip",
+  "archive_sha256": "c00b803081a5c797cd5e4b83700a9810b38d53d9d84e01917e090e1fdbc81031",
+  "random_state": 42,
+  "split": "Official subject-disjoint train/test files from UCI",
+  "model_configuration": {
+    "baseline": "DummyClassifier(strategy='most_frequent')",
+    "logistic_regression": "StandardScaler + LogisticRegression(max_iter=3000, random_state=42)",
+    "random_forest": "RandomForestClassifier(n_estimators=300, random_state=42, n_jobs=-1)"
+  },
+  "validation": {
+    "train_rows": 7352,
+    "test_rows": 2947,
+    "feature_count": 561,
+    "class_count": 6,
+    "train_subject_count": 21,
+    "test_subject_count": 9,
+    "subject_overlap": [],
+    "missing_values": 0,
+    "class_counts": {
+      "WALKING": 1226,
+      "WALKING_UPSTAIRS": 1073,
+      "WALKING_DOWNSTAIRS": 986,
+      "SITTING": 1286,
+      "STANDING": 1374,
+      "LAYING": 1407
+    }
+  },
+  "class_labels": {
+    "1": "WALKING",
+    "2": "WALKING_UPSTAIRS",
+    "3": "WALKING_DOWNSTAIRS",
+    "4": "SITTING",
+    "5": "STANDING",
+    "6": "LAYING"
+  },
+  "software": {
+    "python": "3.13.3",
+    "numpy": "2.5.3",
+    "scikit_learn": "1.9.1",
+    "matplotlib": "3.11.2"
+  },
+  "models": {
+    "Most-frequent baseline": {
+      "accuracy": 0.18221920597217509,
+      "macro_precision": 0.03036986766202918,
+      "macro_recall": 0.16666666666666666,
+      "macro_f1": 0.05137772675086108,
+      "confusion_matrix": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          496
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          471
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          420
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          491
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          532
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          537
+        ]
+      ],
+      "false_positives_by_class": {
+        "WALKING": 0,
+        "WALKING_UPSTAIRS": 0,
+        "WALKING_DOWNSTAIRS": 0,
+        "SITTING": 0,
+        "STANDING": 0,
+        "LAYING": 2410
+      },
+      "false_negatives_by_class": {
+        "WALKING": 496,
+        "WALKING_UPSTAIRS": 471,
+        "WALKING_DOWNSTAIRS": 420,
+        "SITTING": 491,
+        "STANDING": 532,
+        "LAYING": 0
+      },
+      "classification_report": {
+        "WALKING": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 496.0
+        },
+        "WALKING_UPSTAIRS": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 471.0
+        },
+        "WALKING_DOWNSTAIRS": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 420.0
+        },
+        "SITTING": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 491.0
+        },
+        "STANDING": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 532.0
+        },
+        "LAYING": {
+          "precision": 0.18221920597217509,
+          "recall": 1.0,
+          "f1-score": 0.3082663605051665,
+          "support": 537.0
+        },
+        "accuracy": 0.18221920597217509,
+        "macro avg": {
+          "precision": 0.03036986766202918,
+          "recall": 0.16666666666666666,
+          "f1-score": 0.05137772675086108,
+          "support": 2947.0
+        },
+        "weighted avg": {
+          "precision": 0.033203839025129966,
+          "recall": 0.18221920597217509,
+          "f1-score": 0.05617205143918371,
+          "support": 2947.0
+        }
+      }
+    },
+    "Logistic Regression": {
+      "accuracy": 0.9555480149304377,
+      "macro_precision": 0.9584724635970127,
+      "macro_recall": 0.954331718793917,
+      "macro_f1": 0.9554790467788178,
+      "confusion_matrix": [
+        [
+          493,
+          0,
+          3,
+          0,
+          0,
+          0
+        ],
+        [
+          23,
+          447,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          6,
+          16,
+          396,
+          0,
+          2,
+          0
+        ],
+        [
+          0,
+          2,
+          0,
+          430,
+          58,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          14,
+          518,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          5,
+          532
+        ]
+      ],
+      "false_positives_by_class": {
+        "WALKING": 29,
+        "WALKING_UPSTAIRS": 18,
+        "WALKING_DOWNSTAIRS": 4,
+        "SITTING": 14,
+        "STANDING": 65,
+        "LAYING": 1
+      },
+      "false_negatives_by_class": {
+        "WALKING": 3,
+        "WALKING_UPSTAIRS": 24,
+        "WALKING_DOWNSTAIRS": 24,
+        "SITTING": 61,
+        "STANDING": 14,
+        "LAYING": 5
+      },
+      "classification_report": {
+        "WALKING": {
+          "precision": 0.9444444444444444,
+          "recall": 0.9939516129032258,
+          "f1-score": 0.9685658153241651,
+          "support": 496.0
+        },
+        "WALKING_UPSTAIRS": {
+          "precision": 0.9612903225806452,
+          "recall": 0.9490445859872612,
+          "f1-score": 0.9551282051282052,
+          "support": 471.0
+        },
+        "WALKING_DOWNSTAIRS": {
+          "precision": 0.99,
+          "recall": 0.9428571428571428,
+          "f1-score": 0.9658536585365853,
+          "support": 420.0
+        },
+        "SITTING": {
+          "precision": 0.9684684684684685,
+          "recall": 0.8757637474541752,
+          "f1-score": 0.9197860962566845,
+          "support": 491.0
+        },
+        "STANDING": {
+          "precision": 0.888507718696398,
+          "recall": 0.9736842105263158,
+          "f1-score": 0.9291479820627803,
+          "support": 532.0
+        },
+        "LAYING": {
+          "precision": 0.99812382739212,
+          "recall": 0.9906890130353817,
+          "f1-score": 0.994392523364486,
+          "support": 537.0
+        },
+        "accuracy": 0.9555480149304377,
+        "macro avg": {
+          "precision": 0.9584724635970127,
+          "recall": 0.954331718793917,
+          "f1-score": 0.9554790467788178,
+          "support": 2947.0
+        },
+        "weighted avg": {
+          "precision": 0.9573155093498469,
+          "recall": 0.9555480149304377,
+          "f1-score": 0.9554947575051566,
+          "support": 2947.0
+        }
+      }
+    },
+    "Random Forest": {
+      "accuracy": 0.9287410926365796,
+      "macro_precision": 0.930053285423709,
+      "macro_recall": 0.9258372161927756,
+      "macro_f1": 0.9270658436580382,
+      "confusion_matrix": [
+        [
+          484,
+          6,
+          6,
+          0,
+          0,
+          0
+        ],
+        [
+          34,
+          431,
+          6,
+          0,
+          0,
+          0
+        ],
+        [
+          20,
+          40,
+          360,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          435,
+          56,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          42,
+          490,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          537
+        ]
+      ],
+      "false_positives_by_class": {
+        "WALKING": 54,
+        "WALKING_UPSTAIRS": 46,
+        "WALKING_DOWNSTAIRS": 12,
+        "SITTING": 42,
+        "STANDING": 56,
+        "LAYING": 0
+      },
+      "false_negatives_by_class": {
+        "WALKING": 12,
+        "WALKING_UPSTAIRS": 40,
+        "WALKING_DOWNSTAIRS": 60,
+        "SITTING": 56,
+        "STANDING": 42,
+        "LAYING": 0
+      },
+      "classification_report": {
+        "WALKING": {
+          "precision": 0.8996282527881041,
+          "recall": 0.9758064516129032,
+          "f1-score": 0.9361702127659575,
+          "support": 496.0
+        },
+        "WALKING_UPSTAIRS": {
+          "precision": 0.9035639412997903,
+          "recall": 0.9150743099787686,
+          "f1-score": 0.9092827004219409,
+          "support": 471.0
+        },
+        "WALKING_DOWNSTAIRS": {
+          "precision": 0.967741935483871,
+          "recall": 0.8571428571428571,
+          "f1-score": 0.9090909090909091,
+          "support": 420.0
+        },
+        "SITTING": {
+          "precision": 0.9119496855345912,
+          "recall": 0.8859470468431772,
+          "f1-score": 0.8987603305785123,
+          "support": 491.0
+        },
+        "STANDING": {
+          "precision": 0.8974358974358975,
+          "recall": 0.9210526315789473,
+          "f1-score": 0.9090909090909091,
+          "support": 532.0
+        },
+        "LAYING": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 537.0
+        },
+        "accuracy": 0.9287410926365796,
+        "macro avg": {
+          "precision": 0.930053285423709,
+          "recall": 0.9258372161927756,
+          "f1-score": 0.9270658436580382,
+          "support": 2947.0
+        },
+        "weighted avg": {
+          "precision": 0.9299114474624053,
+          "recall": 0.9287410926365796,
+          "f1-score": 0.9285233950455527,
+          "support": 2947.0
+        }
+      }
+    }
+  },
+  "plot": "research\\results\\har_experiment.png"
+}

@@ -1,0 +1,7 @@
+Flask
+cryptography
+requests
+opencv-python-headless
+numpy
+kivy
+plyer

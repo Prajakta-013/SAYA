@@ -1,0 +1,147 @@
+<article class="response" data-incident-id="{{ item.incident_id }}">
+  <h2>Incident #{{ item.incident_id }}</h2>
+  <p class="live-assignment-time">Assignment recorded: <span data-live-field="assignment_timestamp_display">{{ item.assignment_timestamp_display }}</span></p>
+  {% if item.id is none and item.incident_status not in ("Completed", "Cancelled") %}
+    <form class="retry-dispatch" data-incident-id="{{ item.incident_id }}"
+          action="{{ url_for('admin_live_retry', incident_id=item.incident_id) }}">
+      <button class="btn-secondary" type="submit">Retry dispatch</button>
+      <span data-retry-message role="status" aria-live="polite"></span>
+    </form>
+  {% endif %}
+  <section class="response-section">
+    <h3>Live location map</h3>
+    <div class="live-map"
+         id="live-map-{{ item.incident_id }}"
+         data-live-map
+         data-incident-id="{{ item.incident_id }}"
+         data-assignment-id="{{ item.id if item.id is not none else '' }}"
+         role="region"
+         aria-label="Interactive map for incident {{ item.incident_id }}"></div>
+    <script type="application/json" class="map-payload">{{ item.map_payload|tojson }}</script>
+    <p class="map-status" data-map-status>
+      {% if item.map_payload.incident %}
+        Map markers use stored incident/resource coordinates. Ambulance GPS is not connected.
+      {% else %}
+        Map unavailable — incident coordinates are missing or invalid.
+      {% endif %}
+    </p>
+    <div class="map-legend" aria-label="Map legend">
+      <span><i class="legend-dot incident-dot"></i> Incident</span>
+      <span><i class="legend-dot ambulance-dot"></i> Assigned ambulance</span>
+      <span><i class="legend-dot hospital-dot"></i> Assigned hospital</span>
+      <span><i class="legend-line ambulance-line"></i> Ambulance road route</span>
+      <span><i class="legend-line hospital-line"></i> Hospital road route</span>
+    </div>
+    <button class="btn-secondary start-demo-simulation" type="button"
+            data-simulation-button
+            {% if item.id is none or not item.map_payload.ambulance_route %}disabled{% endif %}>
+      Start demo movement
+    </button>
+    <strong class="simulation-label" data-simulation-label hidden>SIMULATED AMBULANCE MOVEMENT</strong>
+    <span class="simulation-progress" data-simulation-progress></span>
+    <p class="quiet" data-simulation-note>
+      {% if item.id is none %}
+        No ambulance movement is shown because this incident is unassigned.
+      {% else %}
+        Demo positions follow the stored OSRM road geometry only. They never update ambulance GPS records.
+      {% endif %}
+    </p>
+  </section>
+  <section class="response-section">
+    <h3>A. Incident and detection</h3>
+    <dl class="facts">
+      <div><dt>Incident ID</dt><dd>#{{ item.incident_id }}</dd></div>
+      <div><dt>Unique event ID</dt><dd>{{ item.event_id_display }}</dd></div>
+      <div><dt>Detection source</dt><dd>{{ item.detection_source or "Detection source not recorded" }}</dd></div>
+      <div>
+        <dt>Original event time</dt>
+        <dd>{{ item.event_timestamp_display }}</dd>
+      </div>
+      <div><dt>Backend received / incident created</dt><dd>{{ item.received_timestamp_display }}</dd></div>
+      <div><dt>Elapsed since received</dt><dd data-live-field="elapsed_since_received">{{ item.elapsed_since_received }}</dd></div>
+      <div><dt>Incident type</dt><dd>{{ item.incident_type or "Incident type not recorded" }}</dd></div>
+      <div><dt>Current incident / dispatch status</dt><dd data-live-field="incident_status">{{ item.incident_status or "Incident status not recorded" }}</dd></div>
+    </dl>
+  </section>
+
+  <section class="response-section">
+    <h3>B. Location and GPS</h3>
+    <dl class="facts">
+      <div><dt>Location label</dt><dd>{{ item.incident_location or "Location label not recorded" }}</dd></div>
+      <div><dt>Exact latitude</dt><dd>{{ item.incident_latitude if item.incident_latitude is not none else "Incident latitude not recorded" }}</dd></div>
+      <div><dt>Exact longitude</dt><dd>{{ item.incident_longitude if item.incident_longitude is not none else "Incident longitude not recorded" }}</dd></div>
+      <div><dt>GPS accuracy</dt><dd>{% if item.incident_gps_accuracy is not none %}±{{ '%.1f'|format(item.incident_gps_accuracy|float) }} metres{% else %}{{ item.gps_accuracy_unavailable_reason }}{% endif %}</dd></div>
+      <div>
+        <dt>Incident map</dt>
+        <dd>
+          {% if item.incident_latitude is not none and item.incident_longitude is not none %}
+            <a href="https://www.google.com/maps?q={{ item.incident_latitude }},{{ item.incident_longitude }}" target="_blank" rel="noopener noreferrer">Open exact incident coordinates in Google Maps</a>
+          {% else %}
+            Map link unavailable — incident coordinates are not recorded
+          {% endif %}
+        </dd>
+      </div>
+    </dl>
+  </section>
+
+  <section class="response-section">
+    <h3>C. Priority and severity</h3>
+    <dl class="facts">
+      <div><dt>Crash confidence</dt><dd>{% if item.crash_confidence is not none %}{{ '%.3f'|format(item.crash_confidence|float) }} — rule-based score, not a calibrated ML probability{% else %}Rule-based score not recorded{% endif %}</dd></div>
+      <div><dt>Severity</dt><dd>{% if item.severity is not none %}{{ item.severity }} / 5{% else %}Severity not recorded{% endif %}</dd></div>
+      <div><dt>Numeric priority score</dt><dd data-live-field="priority_score">{% if item.priority_score is not none %}{{ '%.2f'|format(item.priority_score|float) }} / 10{% else %}Priority score not recorded{% endif %}</dd></div>
+      <div><dt>Priority category</dt><dd data-live-field="priority_label">{% if item.priority_label %}<span class="badge {{ item.priority_label|lower }}">{{ item.priority_label }}</span>{% else %}Priority category not recorded{% endif %}</dd></div>
+    </dl>
+  </section>
+
+  <section class="response-section">
+    <h3>D. Ambulance assignment and route</h3>
+    <dl class="facts">
+      <div><dt>Assignment status</dt><dd data-live-field="ambulance_assignment_status">{{ item.ambulance_assignment_status }}</dd></div>
+      <div><dt>Assigned ambulance</dt><dd data-live-field="ambulance_number_display">{{ item.ambulance_number_display or "No ambulance assigned" }}</dd></div>
+      <div><dt>Ambulance type</dt><dd data-live-field="ambulance_type">{{ item.ambulance_type or "Ambulance type unavailable — no linked assignment" }}</dd></div>
+      <div><dt>Ambulance current/last known latitude</dt><dd data-live-field="ambulance_latitude">{{ item.ambulance_latitude if item.ambulance_latitude is not none else "Ambulance coordinates unavailable — no linked assignment" }}</dd></div>
+      <div><dt>Ambulance current/last known longitude</dt><dd data-live-field="ambulance_longitude">{{ item.ambulance_longitude if item.ambulance_longitude is not none else "Ambulance coordinates unavailable — no linked assignment" }}</dd></div>
+      <div><dt>Ambulance GPS last update</dt><dd data-live-field="ambulance_last_gps_update_display">{{ item.ambulance_last_gps_update_display }}</dd></div>
+      <div><dt>Ambulance coordinate freshness</dt><dd data-live-field="ambulance_coordinate_freshness">{% if item.ambulance_id is not none %}Stored last-known coordinates; no location-update timestamp is recorded{% else %}Unavailable — no ambulance is assigned{% endif %}</dd></div>
+      <div><dt>Ambulance road route</dt><dd data-live-field="ambulance_route_status_display">{{ item.ambulance_route_status_display }}</dd></div>
+      <div><dt>Road distance to incident</dt><dd data-live-field="ambulance_distance">{% if item.ambulance_distance is not none %}{{ '%.2f'|format(item.ambulance_distance|float) }} km{% elif item.id is none %}{{ item.ambulance_distance_status_message }}{% else %}Road distance unavailable — routing failed or was not recorded{% endif %}</dd></div>
+      <div><dt>Road travel ETA</dt><dd data-live-field="ambulance_eta">{% if item.ambulance_eta is not none %}{{ '%.1f'|format(item.ambulance_eta|float) }} minutes{% elif item.id is none %}{{ item.ambulance_eta_status_message }}{% else %}ETA unavailable — routing failed or was not recorded{% endif %}</dd></div>
+    </dl>
+  </section>
+
+  <section class="response-section">
+    <h3>E. Hospital selection, resources and route</h3>
+    <dl class="facts">
+      <div><dt>Hospital assignment status</dt><dd data-live-field="hospital_assignment_status">{{ item.hospital_assignment_status }}</dd></div>
+      <div><dt>Assigned hospital</dt><dd data-live-field="hospital_name_display">{% if item.hospital_name_display %}{{ item.hospital_name_display }} (Hospital #{{ item.hospital_id }}){% else %}No hospital assigned{% endif %}</dd></div>
+      <div><dt>Hospital address / location</dt><dd data-live-field="hospital_location">{{ item.hospital_location or "Hospital address/location not recorded" }}</dd></div>
+      <div><dt>Exact hospital latitude</dt><dd data-live-field="hospital_latitude">{{ item.hospital_latitude if item.hospital_latitude is not none else "Hospital latitude unavailable — no linked assignment" }}</dd></div>
+      <div><dt>Exact hospital longitude</dt><dd data-live-field="hospital_longitude">{{ item.hospital_longitude if item.hospital_longitude is not none else "Hospital longitude unavailable — no linked assignment" }}</dd></div>
+      <div>
+        <dt>Hospital map</dt>
+        <dd>
+          {% if item.hospital_latitude is not none and item.hospital_longitude is not none %}
+            <a data-live-hospital-map-link href="https://www.google.com/maps?q={{ item.hospital_latitude }},{{ item.hospital_longitude }}" target="_blank" rel="noopener noreferrer">Open exact hospital coordinates in Google Maps</a>
+          {% else %}
+            <span data-live-hospital-map-unavailable>Map link unavailable — no linked hospital coordinates</span>
+            <a data-live-hospital-map-link hidden target="_blank" rel="noopener noreferrer"></a>
+          {% endif %}
+        </dd>
+      </div>
+      <div><dt>Available beds</dt><dd data-live-field="hospital_available_beds">{{ item.hospital_available_beds if item.hospital_available_beds is not none else "Available-bed count not recorded" }}</dd></div>
+      <div><dt>Occupied beds / current patients</dt><dd data-live-field="hospital_occupied_beds">{% if item.hospital_occupied_beds is not none %}{{ item.hospital_occupied_beds }}{% elif item.hospital_total_beds is not none and item.hospital_available_beds is not none %}{{ [item.hospital_total_beds|int - item.hospital_available_beds|int, 0]|max }} — derived from total minus available beds{% else %}Occupied-bed count not recorded{% endif %}</dd></div>
+      <div><dt>Emergency capacity</dt><dd data-live-field="hospital_emergency_capacity">{{ item.hospital_emergency_capacity if item.hospital_emergency_capacity is not none else "Emergency capacity not recorded" }}</dd></div>
+      <div><dt>Hospital operational status</dt><dd data-live-field="hospital_status">{{ item.hospital_status or "Hospital status not recorded" }}</dd></div>
+      <div><dt>Hospital road route</dt><dd data-live-field="hospital_route_status_display">{{ item.hospital_route_status_display }}</dd></div>
+      <div><dt>Road distance to hospital</dt><dd data-live-field="hospital_distance">{% if item.hospital_distance is not none %}{{ '%.2f'|format(item.hospital_distance|float) }} km{% elif item.id is none %}{{ item.hospital_distance_status_message }}{% else %}Road distance unavailable — routing failed or was not recorded{% endif %}</dd></div>
+      <div><dt>Hospital ETA</dt><dd data-live-field="hospital_eta">{% if item.hospital_eta is not none %}{{ '%.1f'|format(item.hospital_eta|float) }} minutes{% elif item.id is none %}{{ item.hospital_eta_status_message }}{% else %}ETA unavailable — routing failed or was not recorded{% endif %}</dd></div>
+    </dl>
+  </section>
+
+  <section class="response-section">
+    <h3>F. Assignment and selection explanation</h3>
+    <p data-live-field="assignment_explanation_display">{{ item.assignment_explanation_display }}</p>
+    <p data-live-field="hospital_selection_explanation">{{ item.hospital_selection_explanation }}</p>
+  </section>
+</article>

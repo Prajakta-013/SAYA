@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Overview — SAYA Control Center{% endblock %}
+
+{% block nav %}
+{% include "_admin_nav.html" %}
+{% endblock %}
+
+{% block content %}
+<header class="page-head">
+  <p class="eyebrow">SAYA Emergency Response Control Center</p>
+  <h1>Overview</h1>
+  <p>What is happening across the SAYA network?</p>
+</header>
+
+<section class="stat-row">
+  <div class="stat">
+    <span>Active Emergencies</span>
+    <strong>{{ active_incident_count }}</strong>
+  </div>
+  <div class="stat">
+    <span>Available SAYA Ambulances</span>
+    <strong>{{ available_ambulances }}</strong>
+  </div>
+  <div class="stat">
+    <span>Available Hospitals</span>
+    <strong>{{ available_hospitals }}</strong>
+  </div>
+  <div class="stat">
+    <span>Active Responses</span>
+    <strong>{{ active_assignment_count }}</strong>
+  </div>
+  <div class="stat">
+    <span>System Status</span>
+    <strong class="ok">{{ system_status }}</strong>
+  </div>
+</section>
+
+{% if attention %}
+<section class="attention">
+  <h2>Attention Required</h2>
+  <ul>
+    {% for item in attention %}
+      <li>{{ item }}</li>
+    {% else %}
+      <li>No resource shortages right now.</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% endblock %}

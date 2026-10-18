@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Live Response — SAYA{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin="">
+{% endblock %}
+
+{% block nav %}
+{% include "_admin_nav.html" %}
+{% endblock %}
+
+{% block content %}
+<header class="page-head">
+  <p class="eyebrow">SAYA Emergency Response Control Center</p>
+  <h1>Live Response</h1>
+  <p>Each incident is independent. Assignments shown here are read from the database.</p>
+  <button class="btn-secondary" id="refresh-live" type="button">Refresh current data</button>
+  <span id="live-refresh-status" role="status" aria-live="polite"></span>
+  <form method="post" action="{{ url_for('phone_crash_demo') }}" class="demo-controls">
+    <label for="demo-scenario">Controlled phone-sensor simulation</label>
+    <select id="demo-scenario" name="scenario">
+      {% for scenario in demo_scenarios %}
+        <option value="{{ scenario }}">{{ scenario.replace("_", " ")|title }}</option>
+      {% endfor %}
+    </select>
+    <button class="btn-primary" type="submit">Run safe demo incident</button>
+    <p class="quiet">Creates a clearly simulated local incident; it does not contact emergency services.</p>
+  </form>
+</header>
+
+{% if live_responses|length == 0 %}
+  <p class="empty" data-live-empty>No emergencies yet. Confirmed phone crash alerts appear here automatically.</p>
+{% endif %}
+<div id="live-response-cards">
+  {% include "_admin_live_response_cards.html" %}
+</div>
+<p class="quiet">Live incident/resource data refreshes every 10 seconds without reloading the page.</p>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+<script src="{{ url_for('static', filename='live_response.js') }}" defer></script>
+{% endblock %}

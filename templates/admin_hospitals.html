@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Hospitals — SAYA{% endblock %}
+
+{% block nav %}
+{% include "_admin_nav.html" %}
+{% endblock %}
+
+{% block content %}
+<header class="page-head">
+  <p class="eyebrow">SAYA Emergency Response Control Center</p>
+  <h1>Hospitals</h1>
+  <p>Which hospitals are in the SAYA network?</p>
+</header>
+
+<section class="split">
+  <div>
+    <h2>Network</h2>
+    {% for hospital in hospitals %}
+      <div class="resource-row">
+        <div>
+          <strong>{{ hospital.name }}</strong>
+          <p>{{ hospital.location }}</p>
+          <p>Portal username: {{ hospital.username or "—" }}</p>
+        </div>
+        <span class="badge {% if hospital.status == 'Available' %}available{% else %}busy{% endif %}">
+          {{ hospital.status }}
+        </span>
+      </div>
+    {% else %}
+      <p class="empty">No hospitals in the network.</p>
+    {% endfor %}
+  </div>
+
+  <form class="stack-form inset" action="{{ url_for('admin_add_hospital') }}" method="post">
+    <h2>Add a hospital</h2>
+    <label>Hospital name
+      <input name="name" required>
+    </label>
+    <label>Location
+      <input name="location" required>
+    </label>
+    <label>Total beds
+      <input name="total_beds" type="number" min="0" value="50" required>
+    </label>
+    <label>Available beds
+      <input name="available_beds" type="number" min="0" value="50" required>
+    </label>
+    <label>Current patients / occupied beds
+      <input name="occupied_beds" type="number" min="0" value="0" required>
+    </label>
+    <label>Emergency capacity
+      <input name="emergency_capacity" type="number" min="0" value="20" required>
+    </label>
+    <label>Status
+      <select name="status" required>
+        <option value="Available">Available</option>
+        <option value="Limited">Limited</option>
+        <option value="Unavailable">Unavailable</option>
+      </select>
+    </label>
+    <label>Hospital username
+      <input name="username" autocomplete="off" required>
+    </label>
+    <label>Hospital password
+      <input name="password" type="password" autocomplete="new-password" required>
+    </label>
+    <button type="submit" class="btn-primary">Add hospital</button>
+    <p class="quiet">SAYA finds location coordinates from the address. Capacity can be updated after sign-in.</p>
+  </form>
+</section>
+{% endblock %}

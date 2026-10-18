@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}SAYA — Help That Stays With You.{% endblock %}
+{% block body_class %}home-body{% endblock %}
+{% block main_class %}{% endblock %}
+
+{% block nav %}
+<nav class="nav">
+  <a href="{{ url_for('hospital_login') }}">Hospital Login</a>
+  <a href="{{ url_for('admin_login') }}">Admin Login</a>
+</nav>
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <img class="hero-image" src="{{ url_for('static', filename='images/hero-dandelion.jpg') }}" alt="A dandelion releasing seeds into the dark — a quiet signal of life">
+  <div class="hero-veil"></div>
+  <div class="hero-copy">
+    <p class="eyebrow">AI-assisted emergency response</p>
+    <h1>SAYA</h1>
+    <p class="tagline">Help That Stays With You.</p>
+    <p class="quote">“When you can't call, SAYA can.”</p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="{{ url_for('hospital_login') }}">Hospital Login</a>
+      <a class="btn-ghost" href="{{ url_for('admin_login') }}">Admin Login</a>
+    </div>
+  </div>
+</section>
+
+<section class="page home-intro">
+  <div class="intro-grid">
+    <div>
+      <h2>When you can't reach for help, SAYA reaches for you.</h2>
+      <p>
+        SAYA is an AI-assisted emergency-response network. The victim's smartphone
+        can monitor for a suspected accident and automatically send the emergency to SAYA.
+        SAYA prioritizes the incident, selects a SAYA ambulance, chooses a participating
+        hospital, calculates the road route and ETA, and creates the assignment.
+      </p>
+      <p class="quiet">Open the phone monitor on the device you want to use for this prototype. Strong motion or rotation starts a 10-second cancellation countdown.</p>
+      <a class="btn-primary" href="{{ url_for('phone_monitor') }}">Open Phone Monitor</a>
+    </div>
+    <ol class="flow">
+      <li><span>01</span> Phone detects</li>
+      <li><span>02</span> SAYA decides</li>
+      <li><span>03</span> Ambulance responds</li>
+      <li><span>04</span> Hospital receives</li>
+    </ol>
+  </div>
+</section>
+{% endblock %}

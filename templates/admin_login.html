@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Login — SAYA{% endblock %}
+
+{% block nav %}
+<nav class="nav">
+  <a href="{{ url_for('home') }}">Home</a>
+  <a href="{{ url_for('hospital_login') }}">Hospital Login</a>
+</nav>
+{% endblock %}
+
+{% block content %}
+<section class="auth-panel">
+  <img src="{{ url_for('static', filename='logo.svg') }}" alt="" width="56" height="56">
+  <h1>Control Center</h1>
+  <p>Sign in to the SAYA Emergency Response Control Center.</p>
+  <form class="stack-form" action="{{ url_for('admin_login') }}" method="post">
+    <label>Username
+      <input name="username" autocomplete="username" required>
+    </label>
+    <label>Password
+      <input name="password" type="password" autocomplete="current-password" required>
+    </label>
+    <button type="submit" class="btn-primary">Sign In</button>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,19 @@
+[app]
+title = SAYA
+package.name = saya
+package.domain = org.saya
+source.dir = .
+source.include_exts = py,kv
+source.exclude_dirs = venv,backend,dataset,ml,research,templates,static,__pycache__,.git,.buildozer,bin
+version = 0.1
+requirements = python3,kivy,plyer,requests
+orientation = portrait
+fullscreen = 0
+android.api = 35
+android.minapi = 24
+android.archs = arm64-v8a
+android.permissions = android.permission.INTERNET,android.permission.ACCESS_FINE_LOCATION,android.permission.ACCESS_COARSE_LOCATION
+android.extra_manifest_application_arguments = mobile/android_application_arguments.txt
+android.allow_backup = False
+android.debug_artifact = apk
+p4a.bootstrap = sdl2

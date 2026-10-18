@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}{{ hospital.name }} — SAYA{% endblock %}
+
+{% block nav %}
+{% include "_hospital_nav.html" %}
+{% endblock %}
+
+{% block content %}
+<header class="page-head">
+  <p class="eyebrow">Hospital Portal</p>
+  <h1>{{ hospital.name }}</h1>
+  <p>What is happening at this hospital?</p>
+</header>
+
+<section class="stat-row">
+  <div class="stat">
+    <span>Total Beds</span>
+    <strong>{{ hospital.total_beds }}</strong>
+  </div>
+  <div class="stat">
+    <span>Available Beds</span>
+    <strong>{{ hospital.available_beds }}</strong>
+  </div>
+  <div class="stat">
+    <span>Occupied Beds / Patients</span>
+    <strong>{{ hospital.occupied_beds }}</strong>
+  </div>
+  <div class="stat">
+    <span>Emergency Capacity</span>
+    <strong>{{ hospital.emergency_capacity }}</strong>
+  </div>
+  <div class="stat">
+    <span>Hospital Status</span>
+    <strong>{{ hospital.status }}</strong>
+  </div>
+  <div class="stat">
+    <span>Incoming / Active Emergencies</span>
+    <strong>{{ incoming|length }}</strong>
+  </div>
+</section>
+{% endblock %}

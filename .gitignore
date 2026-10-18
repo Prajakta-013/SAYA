@@ -1,0 +1,31 @@
+
+# Python virtual environments
+venv/
+.venv/
+.venv-1/
+
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Local databases and logs
+*.db
+*.sqlite
+*.sqlite3
+*.log
+
+# Generated build files
+build/
+dist/
+
+
+
+# Android / Buildozer generated files
+.buildozer/
+.buildozer-venv/

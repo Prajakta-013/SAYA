@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="SAYA flowing S mark">
+  <title>SAYA</title>
+  <defs>
+    <linearGradient id="saya-mark" x1="14" y1="8" x2="49" y2="57" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#d9a6a8"/>
+      <stop offset="48%" stop-color="#9c6574"/>
+      <stop offset="100%" stop-color="#4a1c28"/>
+    </linearGradient>
+  </defs>
+  <path d="M45.5 10.3c-5.1-3.2-13.8-2.8-19.4.3-6.8 3.8-8.1 10.7-2.5 14.9 4.1 3.1 11.2 4.3 15.2 7.6 5.3 4.5 3.4 11.8-3.4 16.7-5.9 4.2-14.1 5.4-21.2 2.2"
+        fill="none" stroke="url(#saya-mark)" stroke-width="4.7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M43.4 10.1c3.9 2.4 5.5 5.7 4.3 9.1-.7 2.1-2.2 4.2-4.4 6.1"
+        fill="none" stroke="#c88d98" stroke-width="2" stroke-linecap="round"/>
+  <path d="M12.1 51.2c-1.7 1.4-3.2 2.3-4.8 2.9"
+        fill="none" stroke="#9c6574" stroke-width="2" stroke-linecap="round"/>
+</svg>

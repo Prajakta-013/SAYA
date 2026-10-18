@@ -1,0 +1,6 @@
+<nav class="nav">
+  <a href="{{ url_for('hospital_dashboard') }}" class="{% if request.endpoint == 'hospital_dashboard' %}is-active{% endif %}">Dashboard</a>
+  <a href="{{ url_for('hospital_incoming') }}" class="{% if request.endpoint == 'hospital_incoming' %}is-active{% endif %}">Incoming Emergencies</a>
+  <a href="{{ url_for('hospital_resources') }}" class="{% if request.endpoint == 'hospital_resources' %}is-active{% endif %}">Update Resources</a>
+  <a href="{{ url_for('hospital_logout') }}">Logout</a>
+</nav>

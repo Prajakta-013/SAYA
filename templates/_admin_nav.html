@@ -1,0 +1,7 @@
+<nav class="nav">
+  <a href="{{ url_for('admin_overview') }}" class="{% if request.endpoint == 'admin_overview' %}is-active{% endif %}">Overview</a>
+  <a href="{{ url_for('admin_live_response') }}" class="{% if request.endpoint == 'admin_live_response' %}is-active{% endif %}">Live Response</a>
+  <a href="{{ url_for('admin_hospitals') }}" class="{% if request.endpoint == 'admin_hospitals' %}is-active{% endif %}">Hospitals</a>
+  <a href="{{ url_for('admin_ambulances') }}" class="{% if request.endpoint == 'admin_ambulances' %}is-active{% endif %}">Ambulances</a>
+  <a href="{{ url_for('admin_logout') }}">Logout</a>
+</nav>
